@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Step Montessori | Where Learning is Play</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo"><img src="logo.png" alt="First Step Montessori" class="logo-img"></div>
+            <h1>First Step Montessori</h1>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="menu-overlay"></div>
+        <ul class="nav-menu">
+            <li><a href="#activities">Programs</a></li>
+            <li><a href="#tour">Tour</a></li>
+            <li><a href="#enroll">Enroll</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="bounce">Where Learning is Play!</h1>
+            <p>A safe space for your little ones to grow, imagine, and create.</p>
+            <button class="btn">Enroll Today</button>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape circle"></div>
+            <div class="shape square"></div>
+            <div class="shape triangle"></div>
+        </div>
+    </header>
+
+    <section id="activities" class="info">
+        <h2>Our Fun Activities</h2>
+        <div class="cards">
+            <div class="card purple"><h3>Art & Crafts</h3><p>Expressing colors.</p></div>
+            <div class="card orange"><h3>Story Time</h3><p>Building imagination.</p></div>
+            <div class="card green"><h3>Outdoor Play</h3><p>Happy minds!</p></div>
+        </div>
+    </section>
+
+    <section id="tour" class="video-tour">
+        <div class="video-wrapper">
+            <h2>Take a Virtual Tour! 🎥</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/J4ZDHDwvFwI" title="Tour" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-decor">✨ 🌈 🎈</div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2>Photo Gallery</h2>
+        <div class="polaroid-container">
+            <div class="polaroid p-yellow"><div class="photo-placeholder">🎨</div><p>Painting Day</p></div>
+            <div class="polaroid p-blue"><div class="photo-placeholder">🌳</div><p>Garden Fun</p></div>
+            <div class="polaroid p-pink"><div class="photo-placeholder">🚀</div><p>Space Week</p></div>
+        </div>
+    </section>
+
+    <section id="enroll" class="checklist-section">
+        <div class="checklist-card">
+            <h2>Enrollment Checklist 🎒</h2>
+            <div class="checklist-items">
+                <label class="check-container"><input type="checkbox"><span class="checkmark"></span> Schedule a School Visit</label>
+                <label class="check-container"><input type="checkbox"><span class="checkmark"></span> Fill out the Form</label>
+                <label class="check-container"><input type="checkbox"><span class="checkmark"></span> Vaccination Records</label>
+            </div>
+            <button class="btn">Download PDF 📥</button>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <h2>Frequently Asked Questions 💡</h2>
+        <div class="faq-container">
+            <details class="faq-item">
+                <summary>What are your school hours? ⏰</summary>
+                <div class="faq-answer"><p>We are open 8:00 AM to 5:00 PM, Monday through Friday.</p></div>
+            </details>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Us 📞</h2>
+        <div class="contact-container">
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3>Address</h3>
+                <p>First Step Montessori, Mysore</p>
+                <p>#316, Brindavan Extension, 1st stage</p>
+                <p>Mysore - 570020</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h3>Phone</h3>
+                <p><a href="tel:7026933851" class="contact-link">7026933851</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-logo"><img src="logo.png" alt="First Step Montessori" class="footer-logo-img"></div>
+        <p>First Step Montessori, Mysore</p>
+        <p>#316, Brindavan Extension, 1st stage, Mysore - 570020</p>
+        <p>Contact: <a href="tel:7026933851" class="footer-link">7026933851</a></p>
+        <p class="copyright">&copy; 2026 First Step Montessori.</p>
+    </footer>
+
+    <button id="rocketBtn" onclick="scrollToTop()">🚀</button>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const rocket = document.getElementById('rocketBtn');
+            rocket.style.animation = "blastOff 0.6s ease-in forwards";
+            setTimeout(() => { rocket.style.animation = "none"; }, 1000);
+        }
+        
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        
+        function toggleMenu() {
+            navMenu.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        }
+        
+        function closeMenu() {
+            navMenu.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        }
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', toggleMenu);
+            
+            if (menuOverlay) {
+                menuOverlay.addEventListener('click', closeMenu);
+            }
+            
+            // Close menu when clicking on a link
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+    </script>
+</body>
+</html>
