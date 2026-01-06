@@ -1,0 +1,477 @@
+/* Mobile Responsive Styles */
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    gap: 5px;
+    z-index: 1001;
+}
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--text);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+.menu-overlay.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile Responsive - Tablet and below */
+@media (max-width: 768px) {
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    nav { 
+        padding: 12px 20px; 
+        flex-wrap: nowrap;
+        position: relative;
+        z-index: 1000;
+    }
+    nav.scrolled {
+        padding: 8px 20px;
+    }
+    .nav-left {
+        gap: 10px;
+    }
+    .logo-img { 
+        height: 45px; 
+    }
+    nav h1 {
+        font-size: 1.2rem;
+    }
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    nav ul.nav-menu { 
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        padding: 80px 20px 20px;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 1000;
+        gap: 0;
+        margin: 0;
+        overflow-y: auto;
+    }
+    nav ul.nav-menu.active {
+        right: 0;
+    }
+    .menu-overlay {
+        display: none;
+    }
+    .menu-overlay.active {
+        display: block;
+    }
+    nav ul.nav-menu li {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    nav ul.nav-menu li a { 
+        padding: 15px 20px; 
+        font-size: 1rem;
+        width: 100%;
+        text-align: left;
+        border-radius: 10px;
+    }
+    
+    /* Hero - Reduced height for mobile */
+    .hero {
+        min-height: 40vh;
+        padding: 20px 15px;
+    }
+    .bounce {
+        font-size: 2rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    /* Sections */
+    .info, .video-tour, .gallery-section, .checklist-section, .faq-section, .contact-section {
+        padding: 40px 15px;
+    }
+    .info h2, .video-tour h2, .gallery-section h2, .checklist-section h2, .faq-section h2, .contact-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Cards */
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Video */
+    .video-container {
+        border-radius: 15px;
+        border-width: 2px;
+    }
+    
+    /* Gallery Slideshow for Mobile */
+    .gallery-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .polaroid-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        gap: 0;
+    }
+    .polaroid {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+        display: none;
+        margin: 0;
+        transform: none !important;
+        flex-shrink: 0;
+    }
+    .polaroid.active {
+        display: block;
+    }
+    .gallery-nav {
+        display: flex !important;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 10;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        color: var(--text);
+        font-weight: bold;
+        line-height: 1;
+    }
+    .gallery-nav:active {
+        background: var(--secondary);
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+    .gallery-prev {
+        left: 10px;
+    }
+    .gallery-next {
+        right: 10px;
+    }
+    .gallery-dots {
+        display: flex !important;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .dot.active {
+        background: var(--secondary);
+        transform: scale(1.2);
+    }
+    
+    /* Checklist */
+    .checklist-card {
+        padding: 20px;
+        margin: 0 10px;
+    }
+    
+    /* Contact */
+    .contact-section {
+        position: relative;
+        z-index: 1;
+    }
+    .contact-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 10px;
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+    .contact-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+        padding: 25px 20px;
+        margin: 0;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+        touch-action: manipulation;
+    }
+    .contact-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    .contact-card p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 8px 0;
+    }
+    .contact-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+    .contact-section {
+        padding: 40px 15px !important;
+    }
+    
+    /* Questionnaire */
+    .questionnaire-section {
+        padding: 40px 15px;
+        position: relative;
+        z-index: 1;
+    }
+    .questionnaire-container {
+        padding: 25px 20px;
+        margin: 0 10px;
+        position: relative;
+        z-index: 1;
+    }
+    .questionnaire-intro {
+        font-size: 1rem;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+    .form-group label {
+        font-size: 0.95rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        position: relative;
+        z-index: 1;
+        touch-action: manipulation;
+    }
+    .form-group select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 35px;
+    }
+    .questionnaire-form {
+        position: relative;
+        z-index: 1;
+    }
+    .questionnaire-form .btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .form-section-title {
+        font-size: 1.2rem;
+        margin: 25px 0 15px 0;
+    }
+    
+    /* Loading Animation Mobile */
+    .loading-message {
+        padding: 40px 15px;
+    }
+    .loading-animation {
+        gap: 20px;
+        min-height: 100px;
+    }
+    .bouncing-ball {
+        font-size: 3rem;
+    }
+    .loading-message h3 {
+        font-size: 1.5rem;
+    }
+    .loading-message p {
+        font-size: 1rem;
+    }
+    
+    /* Success Message Mobile */
+    .success-message {
+        padding: 30px 15px;
+    }
+    .success-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2.5rem;
+    }
+    .success-message h3 {
+        font-size: 1.5rem;
+    }
+    .success-message p {
+        font-size: 1rem;
+    }
+    
+    /* Contact Cards */
+    .contact-section {
+        position: relative;
+        z-index: 1;
+    }
+    .contact-card {
+        position: relative;
+        z-index: 1;
+        touch-action: manipulation;
+    }
+    .contact-link {
+        position: relative;
+        z-index: 1;
+        touch-action: manipulation;
+    }
+    .contact-link {
+        font-size: 1.1rem;
+        word-break: break-all;
+    }
+    
+    /* Footer */
+    .main-footer {
+        padding: 30px 20px;
+    }
+    .footer-logo-img {
+        height: 60px;
+    }
+    .main-footer p {
+        font-size: 0.9rem;
+    }
+    
+    /* Fixed Buttons */
+    .fixed-buttons {
+        bottom: 15px;
+        right: 15px;
+        gap: 12px;
+    }
+    #rocketBtn {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+    .whatsapp-btn {
+        width: 50px;
+        height: 50px;
+    }
+    .whatsapp-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Mobile Responsive - Small phones */
+@media (max-width: 480px) {
+    nav h1 {
+        font-size: 1rem;
+    }
+    .logo-img {
+        height: 40px;
+    }
+    .nav-left {
+        gap: 8px;
+    }
+    
+    /* Hero - Even smaller height for small phones */
+    .hero {
+        min-height: 35vh;
+        padding: 15px 10px;
+    }
+    .bounce {
+        font-size: 1.5rem;
+    }
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+    
+    .info h2, .video-tour h2, .gallery-section h2, .checklist-section h2, .faq-section h2, .contact-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+    }
+    
+    /* Contact - Small phones */
+    .contact-container {
+        padding: 0 5px;
+    }
+    .contact-card {
+        padding: 20px 15px;
+    }
+    .contact-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    .contact-card p {
+        font-size: 0.85rem;
+        margin: 6px 0;
+    }
+    .contact-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+    .contact-link {
+        font-size: 1rem;
+        word-break: break-all;
+    }
+}
+
