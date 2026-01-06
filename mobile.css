@@ -128,6 +128,10 @@
     .info, .video-tour, .gallery-section, .checklist-section, .faq-section, .contact-section {
         padding: 40px 15px;
     }
+    .info {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
     .info h2, .video-tour h2, .gallery-section h2, .checklist-section h2, .faq-section h2, .contact-section h2 {
         font-size: 1.5rem;
     }
@@ -135,11 +139,21 @@
     /* Cards */
     .cards {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 20px;
+        padding: 0;
+        width: 100%;
+        margin: 30px 0 0 0;
+        box-sizing: border-box;
     }
     .card {
         width: 100%;
         max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        box-sizing: border-box;
+        flex: 1 1 100%;
+        border-radius: 15px;
     }
     
     /* Video */
