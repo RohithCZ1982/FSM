@@ -184,9 +184,49 @@
         margin: 0;
         transform: none !important;
         flex-shrink: 0;
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        opacity: 0;
     }
     .polaroid.active {
         display: block;
+        opacity: 1;
+    }
+    .polaroid img {
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 20px;
+        display: block;
+        margin: 0 auto;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .polaroid img:active {
+        transform: scale(1.1);
+    }
+    .modal-nav {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 2rem !important;
+    }
+    .modal-prev {
+        left: 10px !important;
+    }
+    .modal-next {
+        right: 10px !important;
+    }
+    .modal-close {
+        top: 15px !important;
+        right: 20px !important;
+        font-size: 40px !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .modal-caption {
+        bottom: 15px !important;
+        font-size: 1rem !important;
+        padding: 8px 15px !important;
     }
     .gallery-nav {
         display: flex !important;

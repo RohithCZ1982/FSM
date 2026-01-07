@@ -64,19 +64,24 @@
         <h2>Photo Gallery</h2>
         <div class="gallery-wrapper">
             <button class="gallery-nav gallery-prev" aria-label="Previous photo">‹</button>
-            <div class="polaroid-container">
-                <div class="polaroid p-yellow active"><div class="photo-placeholder">🎨</div><p>Painting Day</p></div>
-                <div class="polaroid p-blue"><div class="photo-placeholder">🌳</div><p>Garden Fun</p></div>
-                <div class="polaroid p-pink"><div class="photo-placeholder">🚀</div><p>Space Week</p></div>
+            <div class="polaroid-container" id="galleryContainer">
+                <!-- Images will be dynamically loaded here -->
             </div>
             <button class="gallery-nav gallery-next" aria-label="Next photo">›</button>
-            <div class="gallery-dots">
-                <span class="dot active" data-slide="0"></span>
-                <span class="dot" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
+            <div class="gallery-dots" id="galleryDots">
+                <!-- Dots will be dynamically generated here -->
             </div>
         </div>
     </section>
+
+    <!-- Lightbox Modal for Enlarged Images -->
+    <div id="imageModal" class="image-modal">
+        <span class="modal-close">&times;</span>
+        <button class="modal-nav modal-prev" aria-label="Previous image">‹</button>
+        <button class="modal-nav modal-next" aria-label="Next image">›</button>
+        <img class="modal-image" id="modalImage" src="" alt="Enlarged gallery image">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
 
     <section id="enroll" class="checklist-section">
         <div class="checklist-card">
@@ -168,14 +173,24 @@
             });
         }
         
-        // Gallery Slideshow for Mobile
+        // Gallery - Automatic Image Loading
+        // Automatically detects and loads all images from the 'images' folder
+        const polaroidColors = ['p-yellow', 'p-blue', 'p-pink', 'p-green', 'p-purple', 'p-orange'];
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+        
         let currentSlide = 0;
-        const slides = document.querySelectorAll('.polaroid');
-        const dots = document.querySelectorAll('.dot');
+        let slides = [];
+        let dots = [];
+        let galleryImages = [];
+        let autoPlayInterval = null;
         const prevBtn = document.querySelector('.gallery-prev');
         const nextBtn = document.querySelector('.gallery-next');
+        const galleryContainer = document.getElementById('galleryContainer');
+        const galleryDots = document.getElementById('galleryDots');
         
         function showSlide(index) {
+            if (slides.length === 0) return;
+            
             // Wrap around if out of bounds
             if (index >= slides.length) {
                 currentSlide = 0;
@@ -196,18 +211,255 @@
             });
         }
         
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
-            nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+        // Auto-play slideshow
+        function startAutoPlay() {
+            if (slides.length <= 1) return; // Don't auto-play if only one or no images
+            stopAutoPlay(); // Clear any existing interval
+            autoPlayInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 4000); // Change slide every 4 seconds
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
+        
+        // Function to check if an image exists
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+        
+        // Function to automatically discover images
+        async function discoverImages() {
+            const foundImages = [];
+            const maxAttempts = 100; // Try up to 100 images
             
-            // Dot navigation
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', () => showSlide(index));
+            // Try common naming patterns
+            const patterns = [
+                // Sequential: image1.jpg, image2.jpg, etc.
+                (i) => `image${i}.jpg`,
+                (i) => `image${i}.jpeg`,
+                (i) => `image${i}.png`,
+                (i) => `photo${i}.jpg`,
+                (i) => `photo${i}.jpeg`,
+                (i) => `photo${i}.png`,
+                (i) => `img${i}.jpg`,
+                (i) => `img${i}.jpeg`,
+                (i) => `img${i}.png`,
+                // With zero padding: image01.jpg, image02.jpg, etc.
+                (i) => `image${String(i).padStart(2, '0')}.jpg`,
+                (i) => `image${String(i).padStart(2, '0')}.jpeg`,
+                (i) => `image${String(i).padStart(2, '0')}.png`,
+                (i) => `photo${String(i).padStart(2, '0')}.jpg`,
+                (i) => `photo${String(i).padStart(2, '0')}.jpeg`,
+                (i) => `photo${String(i).padStart(2, '0')}.png`,
+            ];
+            
+            // Try each pattern
+            for (let patternIndex = 0; patternIndex < patterns.length; patternIndex++) {
+                const pattern = patterns[patternIndex];
+                let consecutiveFailures = 0;
+                
+                for (let i = 1; i <= maxAttempts && consecutiveFailures < 5; i++) {
+                    const filename = pattern(i);
+                    const url = `images/${filename}`;
+                    
+                    const exists = await checkImageExists(url);
+                    if (exists) {
+                        // Check if we already found this image
+                        if (!foundImages.includes(filename)) {
+                            foundImages.push(filename);
+                        }
+                        consecutiveFailures = 0;
+                    } else {
+                        consecutiveFailures++;
+                    }
+                }
+            }
+            
+            return foundImages;
+        }
+        
+        // Function to generate gallery from images array
+        function generateGallery() {
+            if (galleryImages.length === 0) {
+                // If no images, show placeholder
+                galleryContainer.innerHTML = '<div class="polaroid p-yellow active"><div class="photo-placeholder">📷</div><p>No images found in gallery</p></div>';
+                slides = document.querySelectorAll('.polaroid');
+                return;
+            }
+            
+            // Clear existing content
+            galleryContainer.innerHTML = '';
+            galleryDots.innerHTML = '';
+            
+            // Generate polaroid elements for each image
+            galleryImages.forEach((imageName, index) => {
+                const polaroid = document.createElement('div');
+                const colorClass = polaroidColors[index % polaroidColors.length];
+                polaroid.className = `polaroid ${colorClass} ${index === 0 ? 'active' : ''}`;
+                
+                // Create image element
+                const img = document.createElement('img');
+                img.src = `images/${imageName}`;
+                img.alt = `Gallery image ${index + 1}`;
+                img.dataset.index = index;
+                img.dataset.imageName = imageName;
+                
+                // Make image clickable to open in modal
+                img.addEventListener('click', () => openImageModal(index));
+                
+                // Handle image load error
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'photo-placeholder';
+                    placeholder.textContent = '📷';
+                    this.parentNode.insertBefore(placeholder, this);
+                };
+                
+                polaroid.appendChild(img);
+                galleryContainer.appendChild(polaroid);
+                
+                // Create dot for navigation
+                const dot = document.createElement('span');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.setAttribute('data-slide', index);
+                dot.addEventListener('click', () => {
+                    stopAutoPlay();
+                    showSlide(index);
+                    startAutoPlay(); // Restart after manual navigation
+                });
+                galleryDots.appendChild(dot);
             });
             
-            // Auto-play slideshow (optional - can be removed if not needed)
-            // setInterval(() => showSlide(currentSlide + 1), 3000);
+            // Update slides and dots references
+            slides = document.querySelectorAll('.polaroid');
+            dots = document.querySelectorAll('.dot');
+            
+            // Start auto-play after gallery is generated
+            startAutoPlay();
         }
+        
+        // Initialize: Discover and load images automatically
+        async function initGallery() {
+            galleryContainer.innerHTML = '<div class="polaroid p-yellow active"><div class="photo-placeholder">🔍</div><p>Loading gallery...</p></div>';
+            galleryImages = await discoverImages();
+            generateGallery();
+        }
+        
+        // Attach button event listeners (only once, buttons are static)
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                showSlide(currentSlide - 1);
+                startAutoPlay(); // Restart after manual navigation
+            });
+            nextBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                showSlide(currentSlide + 1);
+                startAutoPlay(); // Restart after manual navigation
+            });
+        }
+        
+        // Pause auto-play on hover, resume on mouse leave
+        if (galleryContainer) {
+            galleryContainer.addEventListener('mouseenter', stopAutoPlay);
+            galleryContainer.addEventListener('mouseleave', startAutoPlay);
+        }
+        
+        // Image Modal/Lightbox functionality
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const modalClose = document.querySelector('.modal-close');
+        const modalPrev = document.querySelector('.modal-prev');
+        const modalNext = document.querySelector('.modal-next');
+        let currentModalIndex = 0;
+        
+        function openImageModal(index) {
+            if (galleryImages.length === 0) return;
+            currentModalIndex = index;
+            updateModalImage();
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            stopAutoPlay();
+        }
+        
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+            startAutoPlay();
+        }
+        
+        function updateModalImage() {
+            if (galleryImages.length === 0) return;
+            const imageName = galleryImages[currentModalIndex];
+            modalImage.src = `images/${imageName}`;
+            modalCaption.textContent = '';
+        }
+        
+        function showNextModalImage() {
+            if (galleryImages.length === 0) return;
+            currentModalIndex = (currentModalIndex + 1) % galleryImages.length;
+            updateModalImage();
+        }
+        
+        function showPrevModalImage() {
+            if (galleryImages.length === 0) return;
+            currentModalIndex = (currentModalIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateModalImage();
+        }
+        
+        // Modal event listeners
+        if (modalClose) {
+            modalClose.addEventListener('click', closeImageModal);
+        }
+        
+        if (modalNext) {
+            modalNext.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showNextModalImage();
+            });
+        }
+        
+        if (modalPrev) {
+            modalPrev.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showPrevModalImage();
+            });
+        }
+        
+        // Close modal when clicking on background
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeImageModal();
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (imageModal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeImageModal();
+                } else if (e.key === 'ArrowRight') {
+                    showNextModalImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevModalImage();
+                }
+            }
+        });
+        
+        // Initialize gallery on page load - automatically discover images
+        initGallery();
     </script>
 </body>
 </html>
