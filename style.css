@@ -155,6 +155,189 @@ nav ul li a:hover {
     background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
 }
 
+.about-section {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+}
+
+.owner-section {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.teachers-section {
+    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.teachers-section h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.teachers-intro {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* About Page Styles */
+.about-section {
+    padding: 60px 20px;
+}
+
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--text);
+}
+
+.about-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.about-text h3 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+/* Owner Section */
+.owner-section {
+    padding: 60px 20px;
+}
+
+.owner-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.owner-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    text-align: center;
+    color: var(--text);
+}
+
+.owner-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.owner-image-wrapper {
+    flex-shrink: 0;
+}
+
+.owner-placeholder {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.owner-text {
+    flex: 1;
+}
+
+.owner-text h3 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.owner-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.owner-quote {
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--secondary);
+    border-left: 4px solid var(--secondary);
+    padding-left: 20px;
+    margin-top: 30px;
+}
+
+/* Teachers Gallery */
+.teachers-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.teacher-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.teacher-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.teacher-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    border-radius: 20px 20px 0 0;
+    transition: transform 0.3s ease;
+}
+
+.teacher-card:hover img {
+    transform: scale(1.05);
+}
+
+.teacher-placeholder {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    border-radius: 20px 20px 0 0;
+}
+
 .faq-section {
     background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
 }

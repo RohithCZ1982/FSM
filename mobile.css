@@ -173,27 +173,30 @@
         position: relative;
         width: 100%;
         overflow: hidden;
-        display: flex;
-        gap: 0;
+        display: block;
+        min-height: 200px;
     }
     .polaroid {
-        min-width: 100%;
         width: 100%;
-        max-width: 100%;
-        display: none;
-        margin: 0;
+        display: none !important;
+        margin: 0 auto;
         transform: none !important;
-        flex-shrink: 0;
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        transition: opacity 0.5s ease-in-out;
         opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
     }
     .polaroid.active {
-        display: block;
+        display: block !important;
         opacity: 1;
+        position: relative;
     }
     .polaroid img {
-        width: 220px;
-        height: 220px;
+        width: 100%;
+        max-width: 280px;
+        height: 180px;
         object-fit: cover;
         border-radius: 20px;
         display: block;
@@ -203,7 +206,13 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .polaroid img:active {
-        transform: scale(1.1);
+        transform: scale(1.05);
+    }
+    .photo-placeholder {
+        width: 100% !important;
+        max-width: 280px !important;
+        height: 180px !important;
+        margin: 0 auto !important;
     }
     .modal-nav {
         width: 45px !important;
@@ -227,6 +236,56 @@
         bottom: 15px !important;
         font-size: 1rem !important;
         padding: 8px 15px !important;
+    }
+    
+    /* About Page Mobile Styles */
+    .about-container h2,
+    .owner-container h2 {
+        font-size: 1.8rem !important;
+    }
+    
+    .about-content,
+    .owner-content {
+        padding: 25px !important;
+    }
+    
+    .owner-content {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .owner-image-wrapper {
+        margin: 0 auto 30px !important;
+    }
+    
+    .owner-placeholder {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .owner-text {
+        text-align: left !important;
+    }
+    
+    .teachers-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+        gap: 20px !important;
+        padding: 10px !important;
+    }
+    
+    .teacher-card img,
+    .teacher-placeholder {
+        height: 200px !important;
+    }
+    
+    .about-text p,
+    .owner-text p {
+        font-size: 1rem !important;
+    }
+    
+    .teachers-intro {
+        font-size: 1rem !important;
+        padding: 0 10px !important;
     }
     .gallery-nav {
         display: flex !important;
