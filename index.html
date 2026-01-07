@@ -315,8 +315,14 @@
                 img.dataset.index = index;
                 img.dataset.imageName = imageName;
                 
-                // Make image clickable to open in modal
-                img.addEventListener('click', () => openImageModal(index));
+                // Make image clickable to open in modal (desktop only)
+                img.addEventListener('click', () => {
+                    // Check if mobile device
+                    if (window.innerWidth <= 768) {
+                        return; // Don't open modal on mobile
+                    }
+                    openImageModal(index);
+                });
                 
                 // Handle image load error
                 img.onerror = function() {
@@ -387,6 +393,10 @@
         let currentModalIndex = 0;
         
         function openImageModal(index) {
+            // Don't open modal on mobile devices
+            if (window.innerWidth <= 768) {
+                return;
+            }
             if (galleryImages.length === 0) return;
             currentModalIndex = index;
             updateModalImage();

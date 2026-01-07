@@ -52,7 +52,7 @@
 
     <section class="owner-section">
         <div class="owner-container">
-            <h2>About the Owner 👨‍💼</h2>
+            <h2>About the Owner</h2>
             <div class="owner-content">
                 <div class="owner-image-wrapper">
                     <div class="owner-placeholder">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="owner-text">
-                    <h3>Our Founder</h3>
+                    <h3>Our Owner</h3>
                     <p>With a passion for early childhood education and years of experience in the field, our founder established First Step Montessori with a vision to create a learning environment where children thrive.</p>
                     
                     <p>Dedicated to the Montessori philosophy, our founder believes that education should be child-centered, allowing each child to discover their unique talents and interests. Through personalized attention and a nurturing approach, we ensure that every child receives the support they need to succeed.</p>
@@ -74,10 +74,17 @@
     </section>
 
     <section class="teachers-section">
-        <h2>Meet Our Teachers 👩‍🏫</h2>
+        <h2>Meet Our Teachers</h2>
         <p class="teachers-intro">Our dedicated team of educators is passionate about nurturing young minds and creating a positive learning environment.</p>
-        <div class="teachers-gallery" id="teachersGallery">
-            <!-- Teachers will be dynamically loaded here -->
+        <div class="teachers-gallery-wrapper">
+            <button class="teachers-nav teachers-prev" aria-label="Previous teacher">‹</button>
+            <div class="teachers-gallery" id="teachersGallery">
+                <!-- Teachers will be dynamically loaded here -->
+            </div>
+            <button class="teachers-nav teachers-next" aria-label="Next teacher">›</button>
+            <div class="teachers-dots" id="teachersDots">
+                <!-- Dots will be dynamically generated here -->
+            </div>
         </div>
     </section>
 
@@ -192,9 +199,7 @@
                 (i) => `teacher${i}.jpg`,
                 (i) => `teacher${i}.jpeg`,
                 (i) => `teacher${i}.png`,
-                (i) => `teachers/teacher${i}.jpg`,
-                (i) => `teachers/teacher${i}.jpeg`,
-                (i) => `teachers/teacher${i}.png`,
+                (i) => `teacher${i}.avif`,
                 (i) => `teacher${String(i).padStart(2, '0')}.jpg`,
                 (i) => `teacher${String(i).padStart(2, '0')}.jpeg`,
                 (i) => `teacher${String(i).padStart(2, '0')}.png`,
@@ -223,6 +228,37 @@
             return foundImages;
         }
         
+        // Teachers slideshow variables
+        let currentTeacherSlide = 0;
+        let teacherCards = [];
+        let teacherDots = [];
+        const teachersPrevBtn = document.querySelector('.teachers-prev');
+        const teachersNextBtn = document.querySelector('.teachers-next');
+        const teachersDotsContainer = document.getElementById('teachersDots');
+        
+        function showTeacherSlide(index) {
+            if (teacherCards.length === 0) return;
+            
+            // Wrap around if out of bounds
+            if (index >= teacherCards.length) {
+                currentTeacherSlide = 0;
+            } else if (index < 0) {
+                currentTeacherSlide = teacherCards.length - 1;
+            } else {
+                currentTeacherSlide = index;
+            }
+            
+            // Update slides
+            teacherCards.forEach((card, i) => {
+                card.classList.toggle('active', i === currentTeacherSlide);
+            });
+            
+            // Update dots
+            teacherDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentTeacherSlide);
+            });
+        }
+        
         // Function to generate teachers gallery
         function generateTeachersGallery() {
             if (teacherImages.length === 0) {
@@ -231,10 +267,11 @@
             }
             
             teachersGallery.innerHTML = '';
+            teachersDotsContainer.innerHTML = '';
             
             teacherImages.forEach((imageName, index) => {
                 const teacherCard = document.createElement('div');
-                teacherCard.className = 'teacher-card';
+                teacherCard.className = `teacher-card ${index === 0 ? 'active' : ''}`;
                 
                 const img = document.createElement('img');
                 const imagePath = imageName.startsWith('teachers/') ? imageName : `images/${imageName}`;
@@ -242,7 +279,12 @@
                 img.alt = `Teacher ${index + 1}`;
                 img.dataset.index = index;
                 
-                img.addEventListener('click', () => openTeacherModal(index));
+                img.addEventListener('click', () => {
+                    // Only open modal on desktop
+                    if (window.innerWidth > 768) {
+                        openTeacherModal(index);
+                    }
+                });
                 
                 img.onerror = function() {
                     this.style.display = 'none';
@@ -254,7 +296,24 @@
                 
                 teacherCard.appendChild(img);
                 teachersGallery.appendChild(teacherCard);
+                
+                // Create dot for navigation
+                const dot = document.createElement('span');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.setAttribute('data-slide', index);
+                dot.addEventListener('click', () => showTeacherSlide(index));
+                teachersDotsContainer.appendChild(dot);
             });
+            
+            // Update references
+            teacherCards = document.querySelectorAll('.teacher-card');
+            teacherDots = document.querySelectorAll('.teachers-dots .dot');
+        }
+        
+        // Attach navigation button listeners
+        if (teachersPrevBtn && teachersNextBtn) {
+            teachersPrevBtn.addEventListener('click', () => showTeacherSlide(currentTeacherSlide - 1));
+            teachersNextBtn.addEventListener('click', () => showTeacherSlide(currentTeacherSlide + 1));
         }
         
         // Teacher Modal functionality
@@ -334,10 +393,36 @@
             }
         });
         
+        // Auto-play teachers slideshow
+        let teachersAutoPlayInterval = null;
+        
+        function startTeachersAutoPlay() {
+            if (teacherImages.length <= 1) return;
+            stopTeachersAutoPlay();
+            teachersAutoPlayInterval = setInterval(() => {
+                showTeacherSlide(currentTeacherSlide + 1);
+            }, 4000);
+        }
+        
+        function stopTeachersAutoPlay() {
+            if (teachersAutoPlayInterval) {
+                clearInterval(teachersAutoPlayInterval);
+                teachersAutoPlayInterval = null;
+            }
+        }
+        
+        // Pause auto-play on hover
+        const teachersGalleryWrapper = document.querySelector('.teachers-gallery-wrapper');
+        if (teachersGalleryWrapper) {
+            teachersGalleryWrapper.addEventListener('mouseenter', stopTeachersAutoPlay);
+            teachersGalleryWrapper.addEventListener('mouseleave', startTeachersAutoPlay);
+        }
+        
         // Initialize teachers gallery
         async function initTeachersGallery() {
             teacherImages = await discoverTeacherImages();
             generateTeachersGallery();
+            startTeachersAutoPlay();
         }
         
         initTeachersGallery();

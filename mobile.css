@@ -214,28 +214,19 @@
         height: 180px !important;
         margin: 0 auto !important;
     }
-    .modal-nav {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 2rem !important;
+    /* Hide image modal on mobile */
+    .image-modal {
+        display: none !important;
     }
-    .modal-prev {
-        left: 10px !important;
+    .image-modal.active {
+        display: none !important;
     }
-    .modal-next {
-        right: 10px !important;
+    .polaroid img {
+        cursor: default !important;
+        pointer-events: none !important;
     }
-    .modal-close {
-        top: 15px !important;
-        right: 20px !important;
-        font-size: 40px !important;
-        width: 40px !important;
-        height: 40px !important;
-    }
-    .modal-caption {
-        bottom: 15px !important;
-        font-size: 1rem !important;
-        padding: 8px 15px !important;
+    .polaroid img:active {
+        transform: none !important;
     }
     
     /* About Page Mobile Styles */
@@ -246,7 +237,12 @@
     
     .about-content,
     .owner-content {
-        padding: 25px !important;
+        padding: 25px 30px !important;
+    }
+    
+    .about-text p,
+    .owner-text p {
+        padding: 0 10px !important;
     }
     
     .owner-content {
@@ -267,15 +263,39 @@
         text-align: left !important;
     }
     
+    /* Teachers Gallery Slideshow for Mobile */
+    .teachers-gallery-wrapper {
+        max-width: 100% !important;
+    }
+    
+    .teachers-nav {
+        display: flex !important;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 2rem !important;
+    }
+    
+    .teachers-prev {
+        left: 10px !important;
+    }
+    
+    .teachers-next {
+        right: 10px !important;
+    }
+    
+    .teachers-dots {
+        display: flex !important;
+        margin-top: 15px !important;
+    }
+    
     .teachers-gallery {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
-        gap: 20px !important;
-        padding: 10px !important;
+        min-height: 250px !important;
     }
     
     .teacher-card img,
     .teacher-placeholder {
-        height: 200px !important;
+        max-width: 100% !important;
+        height: 220px !important;
     }
     
     .about-text p,
