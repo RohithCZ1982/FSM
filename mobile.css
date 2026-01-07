@@ -574,6 +574,14 @@
         font-size: 0.9rem;
     }
     
+    .hero-with-image .hero-content h1 {
+        font-size: 2rem !important;
+    }
+    
+    .hero-with-image .hero-content p {
+        font-size: 1rem !important;
+    }
+    
     .info h2, .video-tour h2, .gallery-section h2, .checklist-section h2, .faq-section h2, .contact-section h2 {
         font-size: 1.3rem;
     }
