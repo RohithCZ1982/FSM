@@ -763,6 +763,48 @@
         word-break: break-all;
     }
     
+    /* Documents Section Mobile Styles */
+    .documents-section {
+        padding: 40px 15px !important;
+    }
+    .documents-container {
+        flex-direction: column !important;
+        gap: 20px !important;
+        padding: 0 !important;
+    }
+    .document-list {
+        padding: 20px 15px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .document-list h3 {
+        font-size: 1.2rem !important;
+        margin-bottom: 15px !important;
+    }
+    .document-list ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+    .document-list li {
+        padding: 10px 12px !important;
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+        border-radius: 8px !important;
+        border-left: 3px solid var(--primary) !important;
+        margin: 0 !important;
+        color: #555 !important;
+    }
+    
     /* Programs Page - Small phones */
     .program-card {
         padding: 20px 15px !important;
@@ -786,6 +828,19 @@
     }
     .schedule p {
         font-size: 0.85rem !important;
+    }
+    
+    /* Documents Section - Small phones */
+    .document-list {
+        padding: 18px 12px !important;
+    }
+    .document-list h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 12px !important;
+    }
+    .document-list li {
+        font-size: 0.85rem !important;
+        padding: 8px 10px !important;
     }
 }
 
