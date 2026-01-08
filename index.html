@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="logo.png" fetchpriority="high">
+    <link rel="preload" as="image" href="images/image1.jpg" fetchpriority="high">
 </head>
 <body>
 
     <nav>
         <div class="nav-left">
-            <div class="logo"><a href="index.html"><img src="logo.png" alt="First Step Montessori" class="logo-img"></a></div>
+            <div class="logo"><a href="index.html"><img src="logo.png" alt="First Step Montessori" class="logo-img" loading="eager" fetchpriority="high" decoding="async"></a></div>
             <h1>First Step Montessori</h1>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -158,7 +161,7 @@
     </section>
 
     <footer class="main-footer">
-        <div class="footer-logo"><img src="logo.png" alt="First Step Montessori" class="footer-logo-img"></div>
+        <div class="footer-logo"><img src="logo.png" alt="First Step Montessori" class="footer-logo-img" loading="lazy" decoding="async"></div>
         <p>First Step Montessori, Mysore</p>
         <p>#316, Brindavan Extension, 1st stage, Mysore - 570020</p>
         <p>Contact: <a href="tel:7026933851" class="footer-link">7026933851</a></p>
@@ -234,10 +237,12 @@
             });
         }
         
-        // Gallery - Automatic Image Loading
-        // Automatically detects and loads all images from the 'images' folder
+        // Gallery - Direct Image Loading (Optimized for GitHub Pages)
+        // Use known image list instead of slow discovery process
         const polaroidColors = ['p-yellow', 'p-blue', 'p-pink', 'p-green', 'p-purple', 'p-orange'];
-        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+        
+        // Known gallery images - update this list if you add more images
+        const knownGalleryImages = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
         
         let currentSlide = 0;
         let slides = [];
@@ -270,6 +275,13 @@
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentSlide);
             });
+            
+            // Preload next image for smoother transition
+            const nextIndex = (currentSlide + 1) % galleryImages.length;
+            if (galleryImages[nextIndex]) {
+                const nextImg = new Image();
+                nextImg.src = `images/${galleryImages[nextIndex]}`;
+            }
         }
         
         // Auto-play slideshow
@@ -288,65 +300,22 @@
             }
         }
         
-        // Function to check if an image exists
-        function checkImageExists(url) {
-            return new Promise((resolve) => {
+        // Optimized: Use known images directly instead of slow discovery
+        async function loadGalleryImages() {
+            // Filter out images that don't exist (optional validation)
+            const validImages = [];
+            for (const imageName of knownGalleryImages) {
                 const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = url;
-            });
-        }
-        
-        // Function to automatically discover images
-        async function discoverImages() {
-            const foundImages = [];
-            const maxAttempts = 100; // Try up to 100 images
-            
-            // Try common naming patterns
-            const patterns = [
-                // Sequential: image1.jpg, image2.jpg, etc.
-                (i) => `image${i}.jpg`,
-                (i) => `image${i}.jpeg`,
-                (i) => `image${i}.png`,
-                (i) => `photo${i}.jpg`,
-                (i) => `photo${i}.jpeg`,
-                (i) => `photo${i}.png`,
-                (i) => `img${i}.jpg`,
-                (i) => `img${i}.jpeg`,
-                (i) => `img${i}.png`,
-                // With zero padding: image01.jpg, image02.jpg, etc.
-                (i) => `image${String(i).padStart(2, '0')}.jpg`,
-                (i) => `image${String(i).padStart(2, '0')}.jpeg`,
-                (i) => `image${String(i).padStart(2, '0')}.png`,
-                (i) => `photo${String(i).padStart(2, '0')}.jpg`,
-                (i) => `photo${String(i).padStart(2, '0')}.jpeg`,
-                (i) => `photo${String(i).padStart(2, '0')}.png`,
-            ];
-            
-            // Try each pattern
-            for (let patternIndex = 0; patternIndex < patterns.length; patternIndex++) {
-                const pattern = patterns[patternIndex];
-                let consecutiveFailures = 0;
-                
-                for (let i = 1; i <= maxAttempts && consecutiveFailures < 5; i++) {
-                    const filename = pattern(i);
-                    const url = `images/${filename}`;
-                    
-                    const exists = await checkImageExists(url);
-                    if (exists) {
-                        // Check if we already found this image
-                        if (!foundImages.includes(filename)) {
-                            foundImages.push(filename);
-                        }
-                        consecutiveFailures = 0;
-                    } else {
-                        consecutiveFailures++;
-                    }
-                }
+                await new Promise((resolve) => {
+                    img.onload = () => {
+                        validImages.push(imageName);
+                        resolve();
+                    };
+                    img.onerror = () => resolve(); // Skip if image doesn't exist
+                    img.src = `images/${imageName}`;
+                });
             }
-            
-            return foundImages;
+            return validImages.length > 0 ? validImages : knownGalleryImages; // Fallback to known list
         }
         
         // Function to generate gallery from images array
@@ -368,12 +337,21 @@
                 const colorClass = polaroidColors[index % polaroidColors.length];
                 polaroid.className = `polaroid ${colorClass} ${index === 0 ? 'active' : ''}`;
                 
-                // Create image element
+                // Create image element with optimized loading
                 const img = document.createElement('img');
                 img.src = `images/${imageName}`;
                 img.alt = `Gallery image ${index + 1}`;
                 img.dataset.index = index;
                 img.dataset.imageName = imageName;
+                img.decoding = 'async'; // Decode asynchronously for better performance
+                
+                // Optimize loading: eager for first image, lazy for others
+                if (index === 0) {
+                    img.loading = 'eager';
+                    img.fetchPriority = 'high';
+                } else {
+                    img.loading = 'lazy';
+                }
                 
                 // Make image clickable to open in modal (desktop only)
                 img.addEventListener('click', () => {
@@ -416,10 +394,10 @@
             startAutoPlay();
         }
         
-        // Initialize: Discover and load images automatically
-        async function initGallery() {
-            galleryContainer.innerHTML = '<div class="polaroid p-yellow active"><div class="photo-placeholder">🔍</div><p>Loading gallery...</p></div>';
-            galleryImages = await discoverImages();
+        // Initialize: Load images directly (much faster)
+        function initGallery() {
+            // Use known images immediately - no async delay
+            galleryImages = knownGalleryImages;
             generateGallery();
         }
         
