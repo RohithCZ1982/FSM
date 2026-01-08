@@ -791,18 +791,27 @@
         gap: 8px !important;
     }
     .document-list li {
-        padding: 10px 12px !important;
+        padding: 10px 12px 10px 30px !important;
         font-size: 0.9rem !important;
         line-height: 1.4 !important;
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
         border-radius: 8px !important;
-        border-left: 3px solid var(--primary) !important;
+        border-left: 3px solid var(--secondary) !important;
         margin: 0 !important;
         color: #555 !important;
+        position: relative !important;
+    }
+    .document-list li:before {
+        content: "✓" !important;
+        position: absolute !important;
+        left: 12px !important;
+        color: var(--secondary) !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
     }
     
     /* Programs Page - Small phones */
@@ -840,7 +849,11 @@
     }
     .document-list li {
         font-size: 0.85rem !important;
-        padding: 8px 10px !important;
+        padding: 8px 10px 8px 28px !important;
+    }
+    .document-list li:before {
+        left: 10px !important;
+        font-size: 0.85rem !important;
     }
 }
 
