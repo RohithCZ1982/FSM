@@ -632,20 +632,37 @@
         padding: 0 !important;
         width: 100%;
         box-sizing: border-box;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        list-style: none;
     }
     .program-features li {
-        padding: 8px 0 !important;
-        padding-left: 25px !important;
-        font-size: 0.95rem !important;
-        line-height: 1.5;
+        padding: 10px 12px !important;
+        padding-left: 12px !important;
+        font-size: 0.9rem !important;
+        line-height: 1.4;
         word-wrap: break-word;
         overflow-wrap: break-word;
         max-width: 100%;
         box-sizing: border-box;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border-radius: 8px;
+        border-left: 3px solid var(--secondary);
+        position: relative;
+        margin: 0 !important;
     }
     .program-features li:before {
-        left: 0;
-        font-size: 1rem;
+        content: "✓";
+        position: absolute;
+        left: 12px;
+        color: var(--secondary);
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-right: 8px;
+    }
+    .program-features li {
+        padding-left: 30px !important;
     }
     .schedule {
         padding: 15px !important;
@@ -764,8 +781,13 @@
         font-size: 0.95rem !important;
     }
     .program-features li {
-        font-size: 0.9rem !important;
-        padding-left: 22px !important;
+        font-size: 0.85rem !important;
+        padding: 8px 10px !important;
+        padding-left: 28px !important;
+    }
+    .program-features li:before {
+        left: 10px;
+        font-size: 0.85rem;
     }
     .schedule p {
         font-size: 0.85rem !important;
