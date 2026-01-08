@@ -85,27 +85,36 @@
 
     <section class="testimonials-section">
         <h2>What Parents Say 💬</h2>
-        <div class="testimonials-container">
-            <div class="testimonial-card">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"First Step Montessori has been a blessing for our family. The teachers are caring, and our child has grown so much in confidence and independence!"</p>
-                <div class="testimonial-author">
-                    <strong>- Priya M., Parent</strong>
+        <div class="testimonials-wrapper">
+            <button class="testimonials-nav testimonials-prev" aria-label="Previous testimonial">‹</button>
+            <div class="testimonials-container">
+                <div class="testimonial-card active">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"First Step Montessori has been a blessing for our family. The teachers are caring, and our child has grown so much in confidence and independence!"</p>
+                    <div class="testimonial-author">
+                        <strong>- Priya M., Parent</strong>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The Montessori approach here is authentic and well-implemented. Our daughter loves going to school every day!"</p>
+                    <div class="testimonial-author">
+                        <strong>- Rajesh K., Parent</strong>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Amazing facilities and wonderful teachers. The school truly nurtures each child's unique potential. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <strong>- Anjali S., Parent</strong>
+                    </div>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"The Montessori approach here is authentic and well-implemented. Our daughter loves going to school every day!"</p>
-                <div class="testimonial-author">
-                    <strong>- Rajesh K., Parent</strong>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Amazing facilities and wonderful teachers. The school truly nurtures each child's unique potential. Highly recommended!"</p>
-                <div class="testimonial-author">
-                    <strong>- Anjali S., Parent</strong>
-                </div>
+            <button class="testimonials-nav testimonials-next" aria-label="Next testimonial">›</button>
+            <div class="testimonials-dots">
+                <span class="testimonial-dot active" data-slide="0"></span>
+                <span class="testimonial-dot" data-slide="1"></span>
+                <span class="testimonial-dot" data-slide="2"></span>
             </div>
         </div>
     </section>
@@ -522,6 +531,88 @@
         
         // Initialize gallery on page load - automatically discover images
         initGallery();
+        
+        // Testimonials Carousel
+        let currentTestimonial = 0;
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+        const testimonialsPrev = document.querySelector('.testimonials-prev');
+        const testimonialsNext = document.querySelector('.testimonials-next');
+        let testimonialsAutoPlayInterval = null;
+        
+        function showTestimonial(index) {
+            if (testimonialCards.length === 0) return;
+            
+            // Wrap around if out of bounds
+            if (index >= testimonialCards.length) {
+                currentTestimonial = 0;
+            } else if (index < 0) {
+                currentTestimonial = testimonialCards.length - 1;
+            } else {
+                currentTestimonial = index;
+            }
+            
+            // Update cards
+            testimonialCards.forEach((card, i) => {
+                card.classList.toggle('active', i === currentTestimonial);
+            });
+            
+            // Update dots
+            testimonialDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentTestimonial);
+            });
+        }
+        
+        function startTestimonialsAutoPlay() {
+            if (testimonialCards.length <= 1) return;
+            stopTestimonialsAutoPlay();
+            testimonialsAutoPlayInterval = setInterval(() => {
+                showTestimonial(currentTestimonial + 1);
+            }, 5000); // Change testimonial every 5 seconds
+        }
+        
+        function stopTestimonialsAutoPlay() {
+            if (testimonialsAutoPlayInterval) {
+                clearInterval(testimonialsAutoPlayInterval);
+                testimonialsAutoPlayInterval = null;
+            }
+        }
+        
+        // Attach event listeners
+        if (testimonialsPrev) {
+            testimonialsPrev.addEventListener('click', () => {
+                stopTestimonialsAutoPlay();
+                showTestimonial(currentTestimonial - 1);
+                startTestimonialsAutoPlay();
+            });
+        }
+        
+        if (testimonialsNext) {
+            testimonialsNext.addEventListener('click', () => {
+                stopTestimonialsAutoPlay();
+                showTestimonial(currentTestimonial + 1);
+                startTestimonialsAutoPlay();
+            });
+        }
+        
+        // Dot navigation
+        testimonialDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                stopTestimonialsAutoPlay();
+                showTestimonial(index);
+                startTestimonialsAutoPlay();
+            });
+        });
+        
+        // Pause auto-play on hover, resume on mouse leave
+        const testimonialsWrapper = document.querySelector('.testimonials-wrapper');
+        if (testimonialsWrapper) {
+            testimonialsWrapper.addEventListener('mouseenter', stopTestimonialsAutoPlay);
+            testimonialsWrapper.addEventListener('mouseleave', startTestimonialsAutoPlay);
+        }
+        
+        // Start auto-play
+        startTestimonialsAutoPlay();
     </script>
 </body>
 </html>
