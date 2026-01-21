@@ -114,14 +114,17 @@
     
     /* Hero - Reduced height for mobile */
     .hero {
-        min-height: 40vh;
+        min-height: 25vh;
         padding: 20px 15px;
     }
     .bounce {
-        font-size: 2rem;
+        font-size: 1.5rem;
+    }
+    .hero-content h1 {
+        font-size: 1.5rem !important;
     }
     .hero-content p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     /* Sections */
@@ -157,9 +160,24 @@
     }
     
     /* Video */
+    .video-tour {
+        padding: 25px 15px !important;
+    }
+    
+    .video-wrapper {
+        padding: 5px !important;
+    }
+    
     .video-container {
         border-radius: 15px;
         border-width: 2px;
+        max-width: 100% !important;
+        margin: 10px auto !important;
+    }
+    
+    .video-tour h2 {
+        font-size: 1.3rem !important;
+        margin-bottom: 15px !important;
     }
     
     /* Gallery Slideshow for Mobile */
@@ -710,22 +728,25 @@
     
     /* Hero - Even smaller height for small phones */
     .hero {
-        min-height: 35vh;
+        min-height: 20vh;
         padding: 15px 10px;
     }
     .bounce {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+    }
+    .hero-content h1 {
+        font-size: 1.3rem !important;
     }
     .hero-content p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     
     .hero-with-image .hero-content h1 {
-        font-size: 2rem !important;
+        font-size: 1.3rem !important;
     }
     
     .hero-with-image .hero-content p {
-        font-size: 1rem !important;
+        font-size: 0.85rem !important;
     }
     
     .info h2, .video-tour h2, .gallery-section h2, .checklist-section h2, .faq-section h2, .contact-section h2 {
