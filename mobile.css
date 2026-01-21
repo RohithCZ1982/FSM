@@ -263,39 +263,37 @@
         text-align: left !important;
     }
     
-    /* Teachers Gallery Slideshow for Mobile */
+    /* Teachers Gallery Grid for Mobile */
     .teachers-gallery-wrapper {
         max-width: 100% !important;
-    }
-    
-    .teachers-nav {
-        display: flex !important;
-        width: 40px !important;
-        height: 40px !important;
-        font-size: 2rem !important;
-    }
-    
-    .teachers-prev {
-        left: 10px !important;
-    }
-    
-    .teachers-next {
-        right: 10px !important;
-    }
-    
-    .teachers-dots {
-        display: flex !important;
-        margin-top: 15px !important;
+        padding: 0 15px !important;
     }
     
     .teachers-gallery {
-        min-height: 250px !important;
+        gap: 15px !important;
+        padding: 15px 0 !important;
+        min-height: auto !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .teacher-card {
+        width: calc(50% - 7.5px) !important;
+        min-width: 150px !important;
     }
     
     .teacher-card img,
     .teacher-placeholder {
+        width: 100% !important;
+        height: 200px !important;
+        min-width: 100% !important;
+        min-height: 200px !important;
         max-width: 100% !important;
-        height: 220px !important;
+        max-height: 200px !important;
+    }
+    
+    .teacher-name-input {
+        font-size: 0.95rem !important;
+        padding: 12px !important;
     }
     
     .about-text p,
