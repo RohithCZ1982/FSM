@@ -11,7 +11,24 @@ body {
     color: var(--text); 
     overflow-x: hidden; 
     scroll-behavior: smooth; 
-    background: #fafafa;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 230, 109, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Components */
@@ -19,9 +36,12 @@ nav {
     display: flex; 
     justify-content: space-between; 
     padding: 15px 50px; 
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); 
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     align-items: center; 
-    box-shadow: 0 2px 20px rgba(0,0,0,0.08); 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
     position: sticky; 
     top: 0; 
     z-index: 1000; 
@@ -34,7 +54,8 @@ nav {
 }
 nav.scrolled {
     padding: 10px 50px;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.6) inset;
+    background: rgba(255, 255, 255, 0.95);
 }
 .logo { 
     display: flex; 
@@ -78,11 +99,14 @@ nav ul li a {
     font-weight: 600; 
     padding: 12px 24px; 
     border-radius: 25px; 
-    transition: all 0.3s ease; 
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
     display: block;
     font-size: 1rem;
     position: relative;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 nav ul li a::before {
     content: '';
@@ -100,24 +124,48 @@ nav ul li a:hover::before {
 nav ul li a:hover { 
     background: linear-gradient(135deg, var(--secondary), #45b8b0); 
     color: white; 
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.5), 0 0 20px rgba(78, 205, 196, 0.3);
+    backdrop-filter: blur(20px);
 }
 .btn { 
-    background: var(--secondary); 
+    background: linear-gradient(135deg, var(--secondary), #45b8b0); 
     color: white; 
     border: none; 
     padding: 15px 30px; 
     border-radius: 50px; 
     cursor: pointer; 
     font-weight: bold; 
-    transition: 0.3s; 
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     text-decoration: none;
     display: inline-block;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4), 0 0 0 0 rgba(78, 205, 196, 0.5);
+    position: relative;
+    overflow: hidden;
 }
-.btn:hover { transform: scale(1.1) rotate(2deg); background: var(--primary); }
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover { 
+    transform: translateY(-3px) scale(1.05); 
+    background: linear-gradient(135deg, var(--primary), #ff5252); 
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5), 0 0 30px rgba(255, 107, 107, 0.3);
+}
 
 /* Hero */
 .hero { 
@@ -128,7 +176,24 @@ nav ul li a:hover {
     justify-content: center; 
     text-align: center; 
     position: relative; 
-    padding: 30px 20px; 
+    padding: 30px 20px;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    50% { transform: translate(-50%, -50%) rotate(180deg); }
 }
 .hero-with-image {
     background-size: cover;
@@ -178,29 +243,74 @@ nav ul li a:hover {
 
 /* Background Colors for Sections */
 .info {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .video-tour {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.9) 100%);
     padding: 30px 20px !important;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.video-tour::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 70% 30%, rgba(255, 230, 109, 0.2) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .video-tour h2 {
     font-size: 1.5rem !important;
     margin-bottom: 20px !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .gallery-section {
-    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    background: linear-gradient(135deg, rgba(252, 231, 243, 0.9) 0%, rgba(251, 207, 232, 0.9) 100%);
     padding: 50px 20px !important;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .gallery-section h2 {
     font-size: 2.2rem !important;
     margin-bottom: 40px !important;
     color: var(--text);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .checklist-section {
@@ -403,16 +513,36 @@ nav ul li a:hover {
 }
 
 .program-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.program-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.program-card:hover::before {
+    opacity: 1;
 }
 
 .program-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
 
 .program-icon {
@@ -840,15 +970,36 @@ nav ul li a:hover {
 }
 
 .facility-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.facility-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.facility-card:hover::after {
+    opacity: 1;
 }
 
 .facility-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
 
 .facility-image {
@@ -965,17 +1116,59 @@ nav ul li a:hover {
 }
 
 .about-section {
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    background: linear-gradient(135deg, rgba(224, 242, 254, 0.9) 0%, rgba(186, 230, 253, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .owner-section {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.owner-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 80% 70%, rgba(255, 230, 109, 0.15) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .teachers-section {
-    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    background: linear-gradient(135deg, rgba(252, 231, 243, 0.9) 0%, rgba(251, 207, 232, 0.9) 100%);
     padding: 60px 20px;
     text-align: center;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.teachers-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .teachers-section h2 {
@@ -1010,10 +1203,12 @@ nav ul li a:hover {
 }
 
 .about-content {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 40px 60px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
 }
 
 .about-text p {
@@ -1053,10 +1248,12 @@ nav ul li a:hover {
     display: flex;
     gap: 40px;
     align-items: flex-start;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 40px 60px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
 }
 
 .owner-image-wrapper {
@@ -1203,13 +1400,15 @@ nav ul li a:hover {
 .teacher-card {
     flex: 0 0 auto;
     margin: 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     position: relative;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
     padding: 0;
     box-sizing: border-box;
     display: flex;
@@ -1220,8 +1419,25 @@ nav ul li a:hover {
     width: 280px;
 }
 
+.teacher-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+.teacher-card:hover::before {
+    left: 100%;
+}
+
 .teacher-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
 
 .teacher-card:hover img {
@@ -1312,17 +1528,38 @@ nav ul li a:hover {
     margin-top: 30px;
 }
 .card {
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
     min-width: 200px;
     max-width: 300px;
     flex: 1;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
 .card.purple { border-top: 5px solid #9b59b6; }
 .card.orange { border-top: 5px solid #e67e22; }
@@ -1515,18 +1752,38 @@ summary { padding: 15px; cursor: pointer; font-weight: bold; }
     margin: 40px auto 0;
 }
 .contact-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 40px 30px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
     flex: 1;
     min-width: 250px;
     max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.contact-card:hover::before {
+    left: 100%;
+}
+
 .contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
 }
 .contact-icon {
     font-size: 3rem;
