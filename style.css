@@ -1049,6 +1049,15 @@ nav ul li a:hover {
     flex-shrink: 0;
 }
 
+.owner-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    display: block;
+}
+
 .owner-placeholder {
     width: 200px;
     height: 200px;
