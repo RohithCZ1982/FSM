@@ -57,7 +57,14 @@
         <div class="video-wrapper">
             <h2>Take a Virtual Tour! 🎥</h2>
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/J4ZDHDwvFwI" title="Tour" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <video class="tour-video" id="tourVideo">
+                    <source src="images/welcome.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="custom-video-controls">
+                    <button id="playTourBtn" class="btn">Play ▶</button>
+                    <button id="pauseTourBtn" class="btn">Pause ⏸</button>
+                </div>
             </div>
             <div class="video-decor">✨ 🌈 🎈</div>
         </div>
@@ -205,6 +212,21 @@
                 nav.classList.remove('scrolled');
             }
         });
+
+        // Video play/pause buttons for the tour video
+        const tourVideo = document.getElementById('tourVideo');
+        const playTourBtn = document.getElementById('playTourBtn');
+        const pauseTourBtn = document.getElementById('pauseTourBtn');
+
+        if (tourVideo && playTourBtn && pauseTourBtn) {
+            playTourBtn.addEventListener('click', () => {
+                tourVideo.play();
+            });
+
+            pauseTourBtn.addEventListener('click', () => {
+                tourVideo.pause();
+            });
+        }
         
         // Mobile menu toggle
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
